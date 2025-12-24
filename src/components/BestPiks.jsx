@@ -38,5 +38,4 @@ const BestPicks = () => {
     </section>
   );
 };
-
 export default BestPicks;

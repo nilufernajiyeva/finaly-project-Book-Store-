@@ -3,13 +3,16 @@ import { CartProvider } from "./context/CartContext";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import About from "./pages/about";
-import Checkout from "./pages/Checkout";
+import Checkout from "./components/CheckoutModal";
 import Cart from "./pages/cart";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/layout/layout";
 import Shop from "./pages/Shop";
 import DeliveryTeam from "./pages/DeliveryTeam";
 import Seller from "./pages/Seller";
+import Login from "./pages/auth/Login";
+import Notifications from "./pages/Notifications";
+import Register from "./pages/auth/Register";
 
 function App() {
   return (
@@ -25,7 +28,13 @@ function App() {
           <Route path="checkout" element={<Checkout />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/notifications" element={<Notifications />} />
+        
         </Route>
+           <Route path="/login" element={<Login />} />
+           <Route path="/register" element={<Register />} />
+
+       
       </Routes>
     </CartProvider>
   );

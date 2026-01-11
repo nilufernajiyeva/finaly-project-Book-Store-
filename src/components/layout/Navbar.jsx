@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react"; 
-import { useCart } from "../../context/CartContext"; // 1. Context-i import etdik
+import { useCart } from "../../context/CartContext";
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false); // Mobil menyu üçün (bu qala bilər)
-  
-  // 2. Mərkəzi state-i buraya bağladıq:
+  const [isOpen, setIsOpen] = useState(false); 
   const { setIsCartOpen, cartItems } = useCart(); 
 
-  // Səbətdəki ümumi məhsul sayını hesablayaq
   const totalItems = cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
   return (
@@ -40,9 +37,18 @@ function Navbar() {
 
         {/* SAĞ TARAF */}
         <div className="relative flex items-center gap-4 md:gap-6">
-          <img src="/bell1.png" alt="Bell" className="w-[20px] h-[20px] cursor-pointer" />
+          
+          {/* BİLDİRİŞ İKONU - İndi birbaşa səhifəyə yönləndirir */}
+          <Link to="/notifications" className="relative group">
+            <img 
+              src="/bell1.png" 
+              alt="Notifications" 
+              className="w-[20px] h-[20px] cursor-pointer hover:scale-110 transition-transform duration-200" 
+            />
+            {/* Əgər gələcəkdə bildiriş sayı göstərmək istəsən, bura kiçik qırmızı dairə qoya bilərsən */}
+          </Link>
 
-          {/* SƏBƏT İKONU - İndi pulta (setIsCartOpen) bağlandı */}
+          {/* SƏBƏT İKONU */}
           <button 
             onClick={() => setIsCartOpen(true)} 
             className="relative text-white hover:text-[#CC9600] transition-colors"
@@ -54,10 +60,14 @@ function Navbar() {
               </span>
             )}
           </button>
-          
-          <div className="flex flex-col items-center">
-            <img src="/profile.png" alt="Profile" className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-[#CC9600] object-cover" />
-          </div>
+
+          <Link to="/login" className="flex flex-col items-center">
+            <img 
+              src="/profile.png" 
+              alt="Profile" 
+              className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-[#CC9600] object-cover cursor-pointer hover:opacity-80 transition-opacity" 
+            />
+          </Link>
 
           <button className="lg:hidden text-white z-50" onClick={() => setIsOpen(!isOpen)}>
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,11 +88,11 @@ function Navbar() {
             <li><Link onClick={() => setIsOpen(false)} to="/shop">Shop</Link></li>
             <li><Link onClick={() => setIsOpen(false)} to="/deliveryteam">Delivery Team</Link></li>
             <li><Link onClick={() => setIsOpen(false)} to="/seller">Sellers</Link></li>
+            {/* Mobil menyuda da bildiriş linki */}
+            <li><Link onClick={() => setIsOpen(false)} to="/notifications">Notifications</Link></li>
           </ul>
         </div>
       </nav>
-      
-      {/* BURADAN CartDrawer-İ SİLDİK, ÇÜNKÜ O ARTIQ LAYOUT-UN İÇİNDƏDİR */}
     </>
   );
 }

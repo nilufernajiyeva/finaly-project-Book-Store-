@@ -14,12 +14,7 @@ const DeliveryTeam = () => {
       location: "Outer Circle · Distribution Point",
       img: "/delivery2.jpg",
     },
-    {
-      title: "International Reach",
-      desc: "Delivering books across borders with care and precision, wherever you are in the world.",
-      location: "Global Distribution Network",
-      img: "/delivery3.jpg",
-    },
+   
   ];
 
   return (
@@ -95,3 +90,4 @@ const DeliveryTeam = () => {
 };
 
 export default DeliveryTeam;
+ 

@@ -1,88 +1,130 @@
 import React, { useState } from 'react';
+import { useCart } from "../context/CartContext"; 
+import CheckoutModal from '../components/CheckoutModal';
 
 const Cart = () => {
-  const [quantity, setQuantity] = useState(1);
-  const pricePerUnit = 900;
-  const totalPrice = 700; // Şəkildəki endirimli qiymət kimi sabit qoyulub
+  const { cartItems, updateQuantity, removeFromCart } = useCart(); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const currentItem = cartItems.length > 0 ? cartItems[cartItems.length - 1] : null;
+
+ 
+  const totalPrice = cartItems.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
+
+  // Şəkil yüklənməyəndə sonsuz döngəni kəsən funksiya
+  const handleImageError = (e) => {
+    e.target.onerror = null; 
+    e.target.src = "https://placehold.co/400x600?text=Book+Cover";
+  };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-[600px] bg-white font-serif">
+    <main className="flex flex-col md:flex-row min-h-screen bg-white font-bona">
       
       {/* --- SOL TƏRƏF: Reklam Paneli --- */}
-      <aside className="w-full md:w-72 bg-[#0d1b3e] text-white p-8 flex flex-col items-center justify-between relative overflow-hidden">
-        <div className="z-10 text-center">
-          <h2 className="text-2xl font-bold italic leading-tight mb-4">
-            Enjoy Special Discounts with <br />
-            <span className="text-white">Mastercard & Visa!</span>
+      <aside className="w-full md:w-[350px] bg-[#0d1b3e] text-white p-10 flex flex-col items-center justify-between">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold leading-tight mb-8">
+            Enjoy Special Discounts with <br /> 
+            <span className="italic">Mastercard & Visa!</span>
           </h2>
-          
-          <div className="my-8 flex justify-center">
-            {/* Kart aparatı təsviri üçün sadə ikon */}
-            <div className="bg-gray-300 w-24 h-32 rounded-lg relative">
-                <div className="bg-gray-800 w-16 h-2 mx-auto mt-4 rounded"></div>
-                <div className="bg-amber-500 w-10 h-6 absolute -bottom-2 right-2 rounded shadow-lg"></div>
-            </div>
+          <div className="w-full h-48 bg-white/5 rounded-2xl mb-10 flex items-center justify-center border border-dashed border-white/20 p-4">
+             {/* Reklam şəkli (Public qovluğunda olmalıdır) */}
+             <img src="/card-promo.png" alt="Promo" className="max-w-full max-h-full object-contain" />
           </div>
-
-          <div className="space-y-1 text-sm mt-10">
-            <p className="font-semibold">Available at:</p>
+          <div className="text-left space-y-2 opacity-80 text-sm">
+            <p className="font-bold uppercase tracking-wider text-[#CC9600]">Available at:</p>
             <p>KCC Book Fair</p>
             <p>BMICH Book Fair</p>
           </div>
         </div>
-        
-        {/* Alt hissədəki uşaq və kitab illüstrasiyası (təmsili) */}
-        <div className="mt-10 relative z-10">
-           <div className="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center text-4xl">
-             📖
-           </div>
+        <div className="mt-10">
+           <img src="/child-reading.png" alt="Illustration" className="w-32 opacity-80" />
         </div>
       </aside>
 
       {/* --- SAĞ TƏRƏF: Səbət Detalları --- */}
-      <main className="flex-1 flex flex-col items-center py-12 px-4">
-        <h1 className="text-3xl font-bold text-[#8b5e3c] mb-12">Your Cart Details</h1>
+      <div className="flex-1 flex flex-col items-center py-16 px-6">
+        <h1 className="text-[32px] md:text-[40px] font-bold text-[#CC9600] mb-16 tracking-widest uppercase text-center">
+          Your Cart Details
+        </h1>
 
-        {/* Məhsul Kartı */}
-        <div className="w-full max-w-sm border border-gray-200 rounded-2xl p-8 shadow-sm bg-white relative">
-          <div className="aspect-[3/4] w-48 mx-auto mb-6 shadow-xl overflow-hidden rounded-sm border-4 border-[#8b5e3c]/20">
-            {/* Kitab Şəkli Yerləşəcək */}
-            <img 
-              src="https://via.placeholder.com/200x300" 
-              alt="Manikkawatha" 
-              className="w-full h-full object-cover"
-            />
-          </div>
+        {currentItem ? (
+          <div className="w-full max-w-md">
+            {/* Məhsul Kartı */}
+            <div className="w-full border border-gray-100 rounded-[40px] p-10 shadow-2xl bg-white flex flex-col items-center relative">
+              
+              {/* Səbətdən silmək üçün X düyməsi */}
+              <button 
+                onClick={() => removeFromCart(currentItem._id)}
+                className="absolute top-6 right-8 text-gray-400 hover:text-red-500 transition-colors text-xl"
+              >
+                ✕
+              </button>
 
-          <div className="text-center">
-            <h3 className="text-xl font-bold text-gray-800">Manikkawatha</h3>
-            <p className="text-sm text-gray-600 mb-4">Mahinda Prasad Masimbula</p>
-            <p className="text-lg font-bold text-gray-900 mb-6">Rs. {pricePerUnit}/=</p>
+              {/* DİNAMİK ŞƏKİL: imageUrl istifadə edildi */}
+              <div className="w-56 h-72 bg-gray-50 rounded-lg shadow-xl mb-8 overflow-hidden border-2 border-gray-100 flex items-center justify-center">
+                <img 
+                  src={currentItem.imageUrl} 
+                  alt={currentItem.title} 
+                  className="w-full h-full object-cover"
+                  onError={handleImageError} 
+                />
+              </div>
 
-            <div className="flex items-center justify-center gap-4">
-              <label className="text-sm font-bold text-[#8b5e3c]">Copies</label>
-              <input 
-                type="number" 
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                className="w-14 border border-gray-300 rounded px-2 py-1 text-center focus:outline-none focus:ring-1 focus:ring-amber-500"
-              />
+              <div className="text-center w-full">
+                <h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight">{currentItem.title}</h3>
+                <p className="text-gray-500 mb-6 font-medium tracking-wide">
+                  {currentItem.author}
+                </p>
+                <p className="text-3xl font-black text-black mb-8 italic">
+                  Rs. {currentItem.price}/=
+                </p>
+
+                {/* Sayı idarəetmə hissəsi */}
+                <div className="flex items-center justify-center gap-6 border-t border-gray-100 pt-8">
+                  <label className="text-xl font-bold text-[#CC9600] uppercase tracking-tighter">Copies</label>
+                  <div className="flex items-center gap-4">
+                    <button 
+                      type="button"
+                      onClick={() => updateQuantity(currentItem._id, -1)}
+                      className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 text-xl font-bold"
+                    > - </button>
+                    
+                    <span className="text-2xl font-bold min-w-[30px] text-center">
+                      {currentItem.quantity || 1}
+                    </span>
+
+                    <button 
+                      type="button"
+                      onClick={() => updateQuantity(currentItem._id, 1)}
+                      className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 text-xl font-bold"
+                    > + </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mt-20 text-center font-bona">
+              <h2 className="text-3xl font-bold text-black mb-10">
+                Total Price: <span className="text-[#CC9600] ml-2 font-black italic">Rs. {totalPrice}.00</span>
+              </h2>
+              
+              <button 
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="px-16 py-5 border-2 border-gray-300 rounded-2xl text-xl font-bold text-gray-700 hover:border-[#CC9600] hover:text-[#CC9600] hover:bg-[#CC9600]/5 transition-all duration-300 uppercase tracking-widest"
+              >
+                Proceed to Checkout
+              </button>
             </div>
           </div>
-        </div>
-
-        {/* Yekun Qiymət və Düymə */}
-        <div className="mt-16 text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">
-            Total Price: <span className="text-[#8b5e3c]">Rs. {totalPrice}.00</span>
-          </h2>
-          
-          <button className="px-12 py-3 border-2 border-gray-400 rounded-lg text-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-            Proceed to Checkout
-          </button>
-        </div>
-      </main>
-    </div>
+        ) : (
+          <div className="flex flex-col items-center py-20">
+            <p className="text-2xl text-gray-400 italic mb-8 font-bona">Your cart is empty.</p>
+          </div>
+        )}
+      </div>
+      <CheckoutModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </main>
   );
 };
 

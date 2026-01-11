@@ -11,10 +11,10 @@ const Shop = () => {
     { _id: "2", title: "Manikkawatha", author: "Mahinda", category: "Novel", price: 750, imageUrl: "/Gamperaliya.png" },
     { _id: "3", title: "The Book Thief", author: "Markus", category: "Translations", price: 850, imageUrl: "/Sieve.png" },
     { _id: "4", title: "Kids Story", author: "Sunil", category: "Kids' Stories", price: 600, imageUrl: "/victoria.png" },
-     { _id: "1", title: "Thunmanhandiya", author: "Manjula", category: "Novel", price: 900, imageUrl: "/Thunmanhandiya.png" },
-    { _id: "2", title: "Manikkawatha", author: "Mahinda", category: "Novel", price: 750, imageUrl: "/Gamperaliya.png" },
-    { _id: "3", title: "The Book Thief", author: "Markus", category: "Translations", price: 850, imageUrl: "/Sieve.png" },
-    { _id: "4", title: "Kids Story", author: "Sunil", category: "Kids' Stories", price: 600, imageUrl: "/victoria.png" },
+     { _id: "5", title: "Thunmanhandiya", author: "Manjula", category: "Novel", price: 900, imageUrl: "/Thunmanhandiya.png" },
+    { _id: "6", title: "Manikkawatha", author: "Mahinda", category: "Novel", price: 750, imageUrl: "/Gamperaliya.png" },
+    { _id: "7", title: "The Book Thief", author: "Markus", category: "Translations", price: 850, imageUrl: "/Sieve.png" },
+    { _id: "8", title: "Kids Story", author: "Sunil", category: "Kids' Stories", price: 600, imageUrl: "/victoria.png" },
   ]);
 
   // 2. State-lər (Filtr və Axtarış üçün)

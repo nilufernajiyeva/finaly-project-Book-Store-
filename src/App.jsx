@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Checkout from "./components/CheckoutModal";
-import Cart from "./pages/cart";
+import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/layout/layout";
 import Shop from "./pages/Shop";

@@ -6,7 +6,7 @@ import About from "./pages/About";
 import Checkout from "./components/CheckoutModal";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
-import Layout from "./components/layout/layout";
+import Layout from "./components/layout/Layout";
 import Shop from "./pages/Shop";
 import DeliveryTeam from "./pages/DeliveryTeam";
 import Seller from "./pages/Seller";
